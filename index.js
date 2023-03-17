@@ -41,7 +41,7 @@ class Sprite {
   //Code to drawImage()
   draw() {
     //1st param: image itsel. 2nd param: x position. 3rd param: y position.
-    c.drawImage(this.image, -925, -400)
+    c.drawImage(this.image, this.position.x, this.position.y)
   }
 }
 
@@ -53,6 +53,22 @@ const background = new Sprite({
   },
   image: image
 })
+
+//Keeping track of which keys were pressed with a keys object
+const keys = {
+  w: {
+    pressed: false
+  },
+  a: {
+    pressed: false
+  },
+  s: {
+    pressed: false
+  },
+  d: {
+    pressed: false
+  }
+}
 
 //Animation loop 
 function animate() {
@@ -81,25 +97,69 @@ function animate() {
     playerImage.width / 4,
     playerImage.height,
   );
+
+  //Repositioning the background image whenever the keys are pressed
+  if (keys.w.pressed && lastKey == 'w') {
+    //since w is the down key, we will only change the y coord
+    background.position.y += 3;
+  }
+  else if (keys.a.pressed && lastKey == 'a') {
+    background.position.x += 3;
+  }
+  else if (keys.s.pressed && lastKey == 's') {
+    background.position.y -= 3;
+  }
+  else if (keys.d.pressed && lastKey == 'd') {
+    background.position.x -= 3;
+  }
+
 }
 
-animate()
+animate();
 
-//Listening for the keydown events to move player image and add animation
+//If the player pressed down on 2 keys, then character will go in direction of last key
+let lastKey = '';
+
+//Listening for the keydown events
 window.addEventListener('keydown', (e) => {
   switch (e.key) {
     case 'w':
-      console.log('pressed w key');
+      keys.w.pressed = true;
+      lastKey = 'w'
       break;
     case 'a':
-      console.log('pressed a key');
+      keys.a.pressed = true;
+      lastKey = 'a'
       break;
     case 's':
-      console.log('pressed s key');
+      keys.s.pressed = true;
+      lastKey = 's'
       break;
     case 'd':
-      console.log('pressed d key');
+      keys.d.pressed = true;
+      lastKey = 'd'
       break;
 
   }
+  console.log(keys);
+})
+
+//Listening for the keyup events
+window.addEventListener('keyup', (e) => {
+  switch (e.key) {
+    case 'w':
+      keys.w.pressed = false;
+      break;
+    case 'a':
+      keys.a.pressed = false;
+      break;
+    case 's':
+      keys.s.pressed = false;
+      break;
+    case 'd':
+      keys.d.pressed = false;
+      break;
+
+  }
+  console.log(keys);
 })
