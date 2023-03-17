@@ -5,6 +5,17 @@ const canvas = document.querySelector("canvas");
 //the parameter would be 2D since we are trying to do a 2D game
 const c = canvas.getContext('2d');
 
+//Variable to store the 2d version of the collisions array
+const collisionsMap = [];
+
+//Populating the 2d collisions array
+for (let i = 0; i < collisions.length; i += 70) {
+  collisionsMap.push(collisions.slice(i, 70 + i));
+}
+
+//Making sure that we have collisions array
+console.log(collisionsMap);
+
 //Setting the size of our canvas. We can do this in css as well
 canvas.width = 1024;
 canvas.height = 576;
