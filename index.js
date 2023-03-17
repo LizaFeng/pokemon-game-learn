@@ -23,10 +23,42 @@ image.src = "./img/learnMap.png";
 const playerImage = new Image();
 playerImage.src = "./img/playerDown.png";
 
-//This fixes the problem of the image not loading by waiting for the image to load.
-image.onload = () => {
-  //1st param: image itsel. 2nd param: x position. 3rd param: y position.
-  c.drawImage(image, -925, -400);
+//To keep track of the different images info
+class Sprite {
+  //Whenever new instance of sprite, constructor called.
+  /**We pass an object (in {}) to the constructor because if we
+    just pass posiiton and velocity, then we have to remember the 
+    position they are in when we are passing arguments
+  **/
+  constructor({ position, velocity, image }) {
+    this.position = position
+    /**We added image as a property because image variable wont be accesible 
+     * from Headers, so we need to pass when we create a Sprite
+     **/
+    this.image = image
+  }
+
+  //Code to drawImage()
+  draw() {
+    //1st param: image itsel. 2nd param: x position. 3rd param: y position.
+    c.drawImage(this.image, -925, -400)
+  }
+}
+
+const background = new Sprite({
+  //we are going to pass an obj for position because it includes x and y coords.
+  position: {
+    x: -925,
+    y: -400
+  },
+  image: image
+})
+
+//Animation loop 
+function animate() {
+  window.requestAnimationFrame(animate)
+  console.log('animate')
+  background.draw()
   //We put the drawingImage() for the player in here because it ensures that the 
   //player image will be drawn after the map is drawn  (player on top of map).
   c.drawImage(playerImage,
@@ -36,7 +68,7 @@ image.onload = () => {
       The 3rd param after this message is the ending x coorindate (we divide by
       4 because there are 4 images and we want to crop equally between them).
       The 4th param after this messsage is the ending y coord (we want full 
-        height of image).
+      height of image).
     **/
     0,
     0,
@@ -51,11 +83,7 @@ image.onload = () => {
   );
 }
 
-//Animation loop 
-function animate() {
-  window.requestAnimationFrame(animate)
-  console.log('animate');
-}
+animate()
 
 //Listening for the keydown events to move player image and add animation
 window.addEventListener('keydown', (e) => {
